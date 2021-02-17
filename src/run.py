@@ -56,10 +56,10 @@ if __name__ == '__main__':
     """
 
     if args.variant == 'vanilla':
-        gpt_model = model.GPT(mconf)
+        model = model.GPT(mconf)
     elif args.variant == 'synthesizer':
         mconf.additive = True
-        gpt_model = model.GPT(mconf)
+        model = model.GPT(mconf)
 
     # From here on, your code should be identical independent of which
     # variant (vanilla or synthesizer) has been chosen.
@@ -89,10 +89,10 @@ if __name__ == '__main__':
                                       warmup_tokens=512*20,
                                       final_tokens=200*len(pretrain_dataset)*block_size,
                                       num_workers=4)
-        gpt_trainer = trainer.Trainer(gpt_model, pretrain_dataset, None, tconf)
+        gpt_trainer = trainer.Trainer(model, pretrain_dataset, None, tconf)
         gpt_trainer.train()
         # save model to args.writing_params_path
-        torch.save(gpt_model.state_dict(), args.writing_params_path)
+        torch.save(model.state_dict(), args.writing_params_path)
     elif args.function == 'finetune':
         assert args.writing_params_path is not None
         assert args.finetune_corpus_path is not None
@@ -143,10 +143,10 @@ if __name__ == '__main__':
                                         warmup_tokens=512*20,
                                         final_tokens=200*len(pretrain_dataset)*block_size,
                                         num_workers=4)
-        gpt_trainer = trainer.Trainer(gpt_model, train_dataset, None, tconf)
+        gpt_trainer = trainer.Trainer(model, train_dataset, None, tconf)
         gpt_trainer.train()
         # save model to args.writing_params_path
-        torch.save(gpt_model.state_dict(), args.writing_params_path)
+        torch.save(model.state_dict(), args.writing_params_path)
     elif args.function == 'evaluate':
         assert args.outputs_path is not None
         assert args.reading_params_path is not None
