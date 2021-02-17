@@ -89,7 +89,6 @@ class SynthesizerAttention(nn.Module):
         #   - Consider especially the parameters self.w1, self.w2 and self.b2.
         #       How do these map to the matrices in the handout?
         B, T, C = x.size()
-        print(B, T, C)
         v = self.value(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, l, hs)
 
         # calculate query, key, values for all heads in batch and move head forward to be the batch dim
